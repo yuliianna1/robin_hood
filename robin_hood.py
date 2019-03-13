@@ -1,7 +1,7 @@
 import pygame, sys
 
 class Robin_hood():
-    def __init__(self, screen):
+    def __init__(self, screen, game_settings):
         self.screen = screen
 
         self.image = pygame.image.load("img/aliens.png")
@@ -16,10 +16,13 @@ class Robin_hood():
         self.moving_left = False
         self.moving_bottom = False
         self.moving_up = False
-        self.jump = False
+
+        self.make_jump = False
+        self.jump_counter = 30
+        self.usr_y = game_settings.height - 100
 
     def blitme(self):
-        self.screen.blit(self.image, self.rect)
+        self.screen.blit(self.image, (self.rect.x, self.usr_y))
 
     def update(self):
         if self.moving_right and self.rect.right < self.screen_rect.right:
@@ -30,21 +33,11 @@ class Robin_hood():
 
         if self.moving_bottom and self.rect.bottom < self.screen_rect.bottom:
             self.rect.y += 1
-
-        if self.moving_up and self.rect.top > self.screen_rect.top:
-            # self.moving_up += 50
-            # if self.moving_up <= 50:
-            #     print("YES")
-            #     self.moving_up = False
-
-            if self.jump == True:
-                self.rect.y -= 1
-            else:
-                self.rect.y += 1
-            if self.rect.y < 400:
-                self.jump = False
-            if self.rect.y > 519 and self.jump == False:
-                self.moving_up = False
-
-                # if self.rect.y < 0:
-                #      self.rect.y == False
+    def jump(self):
+        # print("YES")
+        if self.jump_counter >= -30:
+            self.usr_y -= self.jump_counter / 3
+            self.jump_counter -= 1
+        else:
+            self.jump_counter = 30
+            self.make_jump = False

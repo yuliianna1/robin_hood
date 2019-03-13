@@ -13,15 +13,16 @@ def check_events(hero):
             if i.key == pygame.K_DOWN:
                 hero.moving_bottom = True
 
+            if i.key == pygame.K_SPACE:
+                hero.make_jump = True
+
+        if i.type == pygame.KEYUP:
+            if i.key == pygame.K_RIGHT:
+                print("NDS")
             if i.key == pygame.K_UP:
                 hero.moving_up = True
                 hero.jump = True
 
-
-
-
-        elif i.type == pygame.KEYUP:
-            if i.key == pygame.K_RIGHT:
                 hero.moving_right = False
             if i.key == pygame.K_LEFT:
                 hero.moving_left = False
@@ -35,4 +36,6 @@ def update_screen(screen, game_settings, hero):
     pygame.display.flip()
     screen.fill(game_settings.bg_color)
     hero.blitme()
+    if hero.make_jump:
+        hero.jump()
     hero.update()
