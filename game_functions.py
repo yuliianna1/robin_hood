@@ -18,11 +18,6 @@ def check_events(hero):
 
         if i.type == pygame.KEYUP:
             if i.key == pygame.K_RIGHT:
-                print("NDS")
-            if i.key == pygame.K_UP:
-                hero.moving_up = True
-                hero.jump = True
-
                 hero.moving_right = False
             if i.key == pygame.K_LEFT:
                 hero.moving_left = False
