@@ -1,7 +1,7 @@
 import pygame, sys
+from bullet import Bullet
 
-
-def check_events(hero):
+def check_events(hero, game_settings, bullets, screen):
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             sys.exit()
@@ -12,11 +12,13 @@ def check_events(hero):
                 hero.moving_left = True
             if i.key == pygame.K_DOWN:
                 hero.moving_bottom = True
-            if i.key == pygame.K_SPACE:
+            if i.key == pygame.K_UP:
                 hero.make_jump = True
+            if i.key == pygame.K_SPACE:
+                new_bullet = Bullet(game_settings, screen, hero)
+                bullets.add(new_bullet)
         elif i.type == pygame.KEYUP:
             if i.key == pygame.K_RIGHT:
-                print("YP")
                 hero.moving_right = False
             if i.key == pygame.K_LEFT:
                 hero.moving_left = False
@@ -24,8 +26,21 @@ def check_events(hero):
                 hero.moving_bottom = False
 
 
-def update_screen(screen, game_settings, hero):
+def update_screen(screen, game_settings, hero, bullets):
     if hero.make_jump:
         hero.jump()
-    hero.update()
-    hero.blitme()
+    hero.update(screen)
+    for bullet in bullets:
+        bullet.draw_bullet()
+        print(bullet.y)
+        if bullet.y > 660:
+            bullets.remove(bullet)
+        if bullet.x < hero.rect.x + 350:
+            bullet.x += 6
+            bullet.y -= 0.5
+        elif bullet.x != hero.rect.x + 500:
+            bullet.x += 6
+            bullet.y += 0.5
+        # else:
+        #     bullets.remove(bullet)
+    # hero.blitme()
