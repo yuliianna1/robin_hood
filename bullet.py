@@ -1,14 +1,14 @@
-import pygame, sys
+import pygame
 from pygame.sprite import Sprite
 
 class Bullet(Sprite):
-    def __init__(self, screen, game_settings, hero, bullets, heroes):
+    def __init__(self, game_settings, screen, hero):
         super().__init__()
 
         self.screen = screen
         self.settings = game_settings
 
-        self.image = pygame.image.load("img/arrow.png").convert_alpha()
+        self.image = pygame.image.load("img/arrow.png")
         self.rect = self.image.get_rect()
         self.image = pygame.transform.scale(self.image, (60, 40))
         self.image = pygame.transform.rotate(self.image, 10)

@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 
 class Settings():
 
@@ -20,7 +20,6 @@ class Settings():
         self.bullet_height = 3
         self.bullet_color = (123, 43, 12)
 
-        screen = pygame.display.set_mode((0,0))
-        self.bg = pygame.image.load("img/_12_background.png").convert()
+        self.bg = pygame.image.load("img/_12_background.png")
         self.bg = pygame.transform.scale(self.bg, (1600, 900))
 

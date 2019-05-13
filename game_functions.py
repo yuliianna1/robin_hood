@@ -1,10 +1,15 @@
 import pygame, sys
+
+import boss
 from bullet import Bullet
 from enemy import Enemy
 from  tile import Tile
+from boss import Boss
 
 
-def check_events(screen, game_settings, hero, bullets, heroes):
+
+
+def check_events(hero, game_settings, bullets, screen):
 
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
@@ -21,8 +26,7 @@ def check_events(screen, game_settings, hero, bullets, heroes):
                 hero.make_jump = True
             if len(bullets) != 5:
                 if i.key == pygame.K_SPACE:
-                    hero.shoot = True
-                    new_bullet = Bullet(screen, game_settings, hero, bullets, heroes)
+                    new_bullet = Bullet(game_settings, screen, hero)
                     bullets.add(new_bullet)
         elif i.type == pygame.KEYUP:
             if i.key == pygame.K_RIGHT:
@@ -33,45 +37,54 @@ def check_events(screen, game_settings, hero, bullets, heroes):
                 hero.moving_bottom = False
 
 
-def update_screen(screen, game_settings, hero, bullets, heroes, enemy1,tiles,trap,coin,cave,lian, bird, arrows):
+def update_screen(screen, game_settings, hero, bullets, enemy1, tiles, trap, coin,cave, lian,boss1,hp, hart, arow, chest, num, num1, aroow):
     for wall in tiles:
         screen.blit(wall.image, wall.rect)
-        if hero.moving_right:
+        if hero.moving_right and hero.colided == False:
             wall.rect.x -= 6
-        elif hero.moving_left:
+        elif hero.moving_left and hero.colided == False:
             wall.rect.x += 6
     for traps in trap:
         screen.blit(traps.image, traps.rect)
-        if hero.moving_right:
+        if hero.moving_right and hero.colided == False:
             traps.rect.x -= 6
-        elif hero.moving_left:
+        elif hero.moving_left and hero.colided == False:
             traps.rect.x += 6
     for caves in cave:
         screen.blit(caves.image,caves.rect)
-        if hero.moving_right:
+        if hero.moving_right and hero.colided == False:
             caves.rect.x -= 6
-        elif hero.moving_left:
+        elif hero.moving_left and hero.colided == False:
             caves.rect.x += 6
     for lians in lian:
         screen.blit(lians.image,lians.rect)
-        if hero.moving_right:
+        if hero.moving_right and hero.colided == False:
             lians.rect.x -= 6
-        elif hero.moving_left:
+        elif hero.moving_left and hero.colided == False:
             lians.rect.x += 6
     for coins in coin:
         screen.blit(coins.image, coins.rect)
-        if hero.moving_right:
+        if hero.moving_right and hero.colided == False:
             coins.rect.x -= 6
-        elif hero.moving_left:
+        elif hero.moving_left and hero.colided == False:
             coins.rect.x += 6
-    if pygame.sprite.groupcollide(heroes, arrows, False, True):
-        hero.arrows_counter += 1
-    for arrow in arrows:
-        arrow.blitme()
 
-    #check collides with bird
-    if pygame.sprite.collide_rect(hero, bird):
-        hero.rect.x = 0
+    for aroows in aroow:
+        screen.blit(aroows.image, aroows.rect)
+        if hero.moving_right and hero.colided == False:
+            aroows.rect.x -= 6
+        elif hero.moving_left and hero.colided == False:
+            aroows.rect.x += 6
+    for nums in num:
+        screen.blit(nums.image, nums.rect)
+    for num1s in num1:
+        screen.blit(num1s.image, num1s.rect)
+    for harts in hart:
+        screen.blit(harts.image, harts.rect)
+    for arows in arow:
+        screen.blit(arows.image, arows.rect)
+    for chests in chest:
+        screen.blit(chests.image, chests.rect)
 
     if hero.make_jump:
         hero.jump(game_settings)
@@ -88,7 +101,7 @@ def update_screen(screen, game_settings, hero, bullets, heroes, enemy1,tiles,tra
         game_settings.bg = pygame.transform.scale(game_settings.bg, (1600, 900))
         #if game_settings.bg.rect.x < 0:
         #    game_settings.bg = pygame.transform.flip(game_settings.bg, True, False)
-        level2(tiles, trap, cave, lian, coin)
+        level2(tiles, trap, cave, lian, coin, hart)
         # screen.blit(bg, (bg.get_rect().width, 0))
 
     if pygame.sprite.spritecollideany(hero,coin):
@@ -96,17 +109,34 @@ def update_screen(screen, game_settings, hero, bullets, heroes, enemy1,tiles,tra
 
         coin.remove(coin_el)
 
+
+        for num1s in num1:
+            num1s.counter += 1
+            if num1s.counter == 10:
+                num1s.counter = 0
+                nums.counter += 1
+                nums.image = pygame.image.load("img/tile/" + str(nums.counter) + ".png")
+            num1s.image = pygame.image.load("img/tile/" + str(num1s.counter) + ".png")
+
     if pygame.sprite.spritecollideany(hero,tiles):
         print(hero.rect.y)
         if hero.make_jump:
             hero.make_jump = False
             hero.jump_counter = 30
 
+    if boss1.lep:
+        if hero.moving_right and hero.colided == False:
+            boss1.x -= 6
+        elif hero.moving_left and hero.colided == False:
+            boss1.x += 6
+        boss1.draw_boss()
+        boss1.update()
+
     if enemy1.lep:
-        if hero.moving_right:
-            enemy1.x -= 3
-        elif hero.moving_left:
-            enemy1.x += 3
+        if hero.moving_right and hero.colided == False:
+            enemy1.x -= 6
+        elif hero.moving_left and hero.colided == False:
+            enemy1.x += 6
         enemy1.draw_enemy()
         enemy1.update()
     hero.update()
@@ -129,12 +159,21 @@ def update_screen(screen, game_settings, hero, bullets, heroes, enemy1,tiles,tra
             enemy1.x = 0
             enemy1.y = 0
             bullets.remove(bullet)
-    bird.blitme()
+        elif bullet.rect.x > boss1.x and bullet.rect.y < boss1.y + 200 and bullet.rect.y > boss1.y:
+            hp -= 1
+        elif hp == 0:
+            boss1.lep = False
+            boss1.x = 0
+            boss1.y = 0
 
-def level2(tiles, trap, cave, lian, coin):
-    level2 = ["    b",
-              "    b",
-              "    b",
+
+
+    # hero.blitme()
+
+def level2(tiles, trap, cave, lian, coin, hart):
+    level2 = ["hhh b",
+              "C   b",
+              "A   b",
               "    b         c         ",
               "    b        bbb         ",
               "    b                      b     bbb                                          bb",
@@ -143,9 +182,9 @@ def level2(tiles, trap, cave, lian, coin):
               "    b     bbbbb                 b                         bb           bb     bbb",
               "    bbbb                      bbbbb              bb     bb            b         bb",
               "                                             bb     bb       bb     b        bbbbbbb",
-              "         Z              Z  Z  tttttZt   Z                       bb     Z    bb     Z",               #bose location
-              "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbttttttttttttttttttttZtbbbbbbbbbbbbbbbbbbbbWbbWbWbWWWbWbbWWbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-              "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "         Z               Z  Z  tttttZt   Z                       bb     Z    bb     Z",               #bose location
+              "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbttttttttttttttttttttZtbbbbbbbbbbbbbbbbbbbbWbbWbWbWWbbbbbbbbbbbbbbbb",
+              "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
 
               ]
     x = y = 0
@@ -169,6 +208,9 @@ def level2(tiles, trap, cave, lian, coin):
                 Tile(x, y, "cave.png", cave)
             elif col == "W":
                 Tile(x, y, "water.png", lian)
+            elif col == "h":
+                Tile(x, y, "hart.png", hart)
+
             x += 64
         y += 64
         x = 0

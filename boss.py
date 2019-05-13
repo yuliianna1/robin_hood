@@ -1,19 +1,20 @@
 import pygame
 from pygame.sprite import Sprite
 
-class Enemy(Sprite):
+class Boss(Sprite):
     def __init__(self,screen, game_settings):
         super().__init__()
 
         self.screen = screen
         self.g_s = game_settings
-        self.image = pygame.image.load("img/_WALK_000.png")
-        self.image = pygame.transform.scale(self.image, (180, 160))
-        self.x = 1000
-        self.y = game_settings.height - 290
+        self.image = pygame.image.load("img/enemy.png")
+        self.image = pygame.transform.scale(self.image, (225, 200))
+        self.x = 4500
+        self.y = game_settings.height - 330
         self.counter = 0
         self.counterbin = 1
         self.lep = True
+        self.hp = 0
 
 
 
@@ -33,9 +34,5 @@ class Enemy(Sprite):
 
 
 
-    def draw_enemy(self):
+    def draw_boss(self):
         self.screen.blit(self.image, (self.x, self.y))
-
-
-
-
