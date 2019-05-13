@@ -35,7 +35,6 @@ class Bird(Sprite):
                 self.n *= -1
         else:
             self.rect.y += 3
-            print(self.rect.y)
             if self.rect.y >= 500:
                 self.attack = False
 

@@ -6,7 +6,7 @@ class Ship():
     def __init__(self, screen):
         self.screen = screen
 
-        self.image = pygame.image.load("img/Archer.png")
+        self.image = pygame.image.load("img/Archer.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (120, 80))
         self.rect = self.image.get_rect()
         self.screen_rect = self.screen.get_rect()

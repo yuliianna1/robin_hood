@@ -37,44 +37,51 @@ def check_events(hero, game_settings, bullets, screen):
                 hero.moving_bottom = False
 
 
-def update_screen(screen, game_settings, hero, bullets, enemy1, tiles, trap, coin,cave, lian,boss1,hp, hart, arow, chest, num, num1, aroow):
-    for wall in tiles:
-        screen.blit(wall.image, wall.rect)
-        if hero.moving_right and hero.colided == False:
-            wall.rect.x -= 6
-        elif hero.moving_left and hero.colided == False:
-            wall.rect.x += 6
-    for traps in trap:
-        screen.blit(traps.image, traps.rect)
-        if hero.moving_right and hero.colided == False:
-            traps.rect.x -= 6
-        elif hero.moving_left and hero.colided == False:
-            traps.rect.x += 6
-    for caves in cave:
-        screen.blit(caves.image,caves.rect)
-        if hero.moving_right and hero.colided == False:
-            caves.rect.x -= 6
-        elif hero.moving_left and hero.colided == False:
-            caves.rect.x += 6
-    for lians in lian:
-        screen.blit(lians.image,lians.rect)
-        if hero.moving_right and hero.colided == False:
-            lians.rect.x -= 6
-        elif hero.moving_left and hero.colided == False:
-            lians.rect.x += 6
-    for coins in coin:
-        screen.blit(coins.image, coins.rect)
-        if hero.moving_right and hero.colided == False:
-            coins.rect.x -= 6
-        elif hero.moving_left and hero.colided == False:
-            coins.rect.x += 6
-
-    for aroows in aroow:
-        screen.blit(aroows.image, aroows.rect)
-        if hero.moving_right and hero.colided == False:
-            aroows.rect.x -= 6
-        elif hero.moving_left and hero.colided == False:
-            aroows.rect.x += 6
+def update_screen(screen, game_settings, hero, bullets, enemy1, tiles, trap, coin,cave, lian,boss1,hp, hart, arow, chest, num, num1, aroow, bird, all_tiles):
+    print(all_tiles)
+    for group_tile in all_tiles:
+        for tile in group_tile:
+            screen.blit(tile.image, tile.rect)
+            if hero.moving_right and hero.colided == False:
+                tile.rect.x -= 6
+            elif hero.moving_left and hero.colided == False:
+                tile.rect.x += 6
+    # for wall in tiles:
+    #     screen.blit(wall.image, wall.rect)
+    #     if hero.moving_right and hero.colided == False:
+    #         wall.rect.x -= 6
+    #     elif hero.moving_left and hero.colided == False:
+    #         wall.rect.x += 6
+    # for traps in trap:
+    #     screen.blit(traps.image, traps.rect)
+    #     if hero.moving_right and hero.colided == False:
+    #         traps.rect.x -= 6
+    #     elif hero.moving_left and hero.colided == False:
+    #         traps.rect.x += 6
+    # for caves in cave:
+    #     screen.blit(caves.image,caves.rect)
+    #     if hero.moving_right and hero.colided == False:
+    #         caves.rect.x -= 6
+    #     elif hero.moving_left and hero.colided == False:
+    #         caves.rect.x += 6
+    # for lians in lian:
+    #     screen.blit(lians.image,lians.rect)
+    #     if hero.moving_right and hero.colided == False:
+    #         lians.rect.x -= 6
+    #     elif hero.moving_left and hero.colided == False:
+    #         lians.rect.x += 6
+    # for coins in coin:
+    #     screen.blit(coins.image, coins.rect)
+    #     if hero.moving_right and hero.colided == False:
+    #         coins.rect.x -= 6
+    #     elif hero.moving_left and hero.colided == False:
+    #         coins.rect.x += 6
+    # for aroows in aroow:
+    #     screen.blit(aroows.image, aroows.rect)
+    #     if hero.moving_right and hero.colided == False:
+    #         aroows.rect.x -= 6
+    #     elif hero.moving_left and hero.colided == False:
+    #         aroows.rect.x += 6
     for nums in num:
         screen.blit(nums.image, nums.rect)
     for num1s in num1:
@@ -114,12 +121,9 @@ def update_screen(screen, game_settings, hero, bullets, enemy1, tiles, trap, coi
             num1s.counter += 1
             if num1s.counter == 10:
                 num1s.counter = 0
-                nums.counter += 1
-                nums.image = pygame.image.load("img/tile/" + str(nums.counter) + ".png")
-            num1s.image = pygame.image.load("img/tile/" + str(num1s.counter) + ".png")
+            num1s.image = pygame.image.load("img/tile/" + str(num1s.counter) + ".png").convert_alpha()
 
     if pygame.sprite.spritecollideany(hero,tiles):
-        print(hero.rect.y)
         if hero.make_jump:
             hero.make_jump = False
             hero.jump_counter = 30
@@ -168,7 +172,7 @@ def update_screen(screen, game_settings, hero, bullets, enemy1, tiles, trap, coi
 
 
 
-    # hero.blitme()
+    bird.blitme()
 
 def level2(tiles, trap, cave, lian, coin, hart):
     level2 = ["hhh b",

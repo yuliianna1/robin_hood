@@ -7,7 +7,7 @@ class Boss(Sprite):
 
         self.screen = screen
         self.g_s = game_settings
-        self.image = pygame.image.load("img/enemy.png")
+        self.image = pygame.image.load("img/enemy.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (225, 200))
         self.x = 4500
         self.y = game_settings.height - 330

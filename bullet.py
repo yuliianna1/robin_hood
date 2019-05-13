@@ -8,7 +8,7 @@ class Bullet(Sprite):
         self.screen = screen
         self.settings = game_settings
 
-        self.image = pygame.image.load("img/arrow.png")
+        self.image = pygame.image.load("img/arrow.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.image = pygame.transform.scale(self.image, (60, 40))
         self.image = pygame.transform.rotate(self.image, 10)

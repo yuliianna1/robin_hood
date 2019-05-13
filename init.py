@@ -6,6 +6,7 @@ from pygame.sprite import Group
 from enemy import Enemy
 from tile import Tile
 from boss import Boss
+from bird import Bird
 
 
 clock = pygame.time.Clock()
@@ -22,6 +23,7 @@ def init_game():
     # bg = pygame.transform.scale(bg, (1600, 900))
     enemy1 = Enemy(screen, game_settings)
     boss1 = Boss(screen,game_settings)
+    bird = Bird(screen, game_settings)
     hp = 3
     trap = Group()
     tiles = Group()
@@ -34,6 +36,7 @@ def init_game():
     aroow = Group()
     num = Group()
     num1 = Group()
+    all_tiles = [trap, tiles, cave, lian, coin, aroow]
     level1 = ["hhh",
               "Cnm",
               "A",
@@ -89,7 +92,7 @@ def init_game():
 
     while True:
         g_f.check_events(hero, game_settings, bullets, screen)
-        g_f.update_screen(screen, game_settings, hero, bullets, enemy1,tiles,trap,coin,cave,lian,boss1,hp, hart, arow, chest, num, num1, aroow)
+        g_f.update_screen(screen, game_settings, hero, bullets, enemy1,tiles,trap,coin,cave,lian,boss1,hp, hart, arow, chest, num, num1, aroow, bird, all_tiles)
         #screen.blit(bg, (0 - game_settings.CameraX, 0 - game_settings.CameraY))
         screen.blit(hero.image, (hero.rect.x, hero.rect.y-30))
         pygame.display.flip()
@@ -99,6 +102,5 @@ def init_game():
             screen.blit(game_settings.bg, (rel_x, 0))
         x = 0 - hero.rect.x
         clock.tick(60)
-        print (hero.rect.x)
 
 init_game()
