@@ -23,6 +23,7 @@ class Bird(Sprite):
         self.fly = False
         self.rect.y = 10
         self.alive = True
+        #some comments
 
     def blitme(self):
         if self.rect.x == 500:
