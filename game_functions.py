@@ -26,8 +26,7 @@ def check_events(hero, game_settings, bullets, screen):
                 hero.make_jump = True
             if len(bullets) != 5:
                 if i.key == pygame.K_SPACE:
-                    new_bullet = Bullet(game_settings, screen, hero)
-                    bullets.add(new_bullet)
+                    hero.shoot = True
         elif i.type == pygame.KEYUP:
             if i.key == pygame.K_RIGHT:
                 hero.moving_right = False
@@ -38,7 +37,11 @@ def check_events(hero, game_settings, bullets, screen):
 
 
 def update_screen(screen, game_settings, hero, bullets, enemy1, tiles, trap, coin,cave, lian, boss1, hp, hart, arow, chest, num, num1, aroow, bird, all_tiles):
-    print(all_tiles)
+    if hero.shoot_counter > (len(hero.shoot_img) - 1) * 8:
+        new_bullet = Bullet(game_settings, screen, hero)
+        bullets.add(new_bullet)
+
+
     for group_tile in all_tiles:
         for tile in group_tile:
             screen.blit(tile.image, tile.rect)

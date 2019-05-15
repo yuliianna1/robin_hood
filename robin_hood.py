@@ -1,5 +1,6 @@
 import pygame, sys
 from pygame.sprite import Sprite
+from bullet import Bullet
 
 class Robin_hood():
 
@@ -19,6 +20,10 @@ class Robin_hood():
         self.jump_up_img = ["img/jump_up/jump_up1.png", "img/jump_up/jump_up2.png", "img/jump_up/jump_up3.png",
                             "img/jump_up/down1.png", "img/jump_up/down2.png", "img/jump_up/down3.png",
                             "img/jump_up/down4.png"]
+        self.shoot_img = ["img/shoot/shoot11.png", "img/shoot/shoot22.png", "img/shoot/shoot33.png",
+                          "img/shoot/shoot44.png",
+                          "img/shoot/shoot55.png", "img/shoot/shoot66.png"]
+
         self.img_counter = 0
 
         self.rect.x = 0
@@ -27,6 +32,8 @@ class Robin_hood():
         self.moving_left = False
         self.moving_bottom = False
         self.moving_up = False
+        self.shoot = False
+        self.shoot_counter = 0
 
         self.make_jump = False
         self.jump_counter = 30
@@ -34,6 +41,7 @@ class Robin_hood():
         self.tiles = tiles
         self.colided = False
         self.jump_y = 0
+
 
 
     def blitme(self, bg):
@@ -81,6 +89,14 @@ class Robin_hood():
                 for object in collided_objects:
                     if self.rect.top < object.rect.top:
                         self.rect.bottom = object.rect.top
+
+        if self.shoot:
+            if self.shoot_counter > (len(self.shoot_img) - 1) * 8:
+                self.shoot_counter = 0
+                self.shoot = False
+            self.image = pygame.image.load(self.shoot_img[self.shoot_counter//8]).convert_alpha()
+            self.image = pygame.transform.scale(self.image, (100, 100))
+            self.shoot_counter += 1
 
             #self.g_s.CameraX -= 1
 
