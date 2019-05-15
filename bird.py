@@ -22,6 +22,7 @@ class Bird(Sprite):
         self.attack = False
         self.fly = False
         self.rect.y = 10
+        self.alive = True
 
     def blitme(self):
         if self.rect.x == 500:
@@ -37,6 +38,8 @@ class Bird(Sprite):
             self.rect.y += 3
             if self.rect.y >= 500:
                 self.attack = False
+
+
 
         self.image = pygame.image.load(self.bird_img[self.counter//15]).convert_alpha()
         self.image = pygame.transform.flip(self.image, True, False)

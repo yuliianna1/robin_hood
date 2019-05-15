@@ -1,4 +1,5 @@
 import pygame, sys
+from pygame.sprite import Sprite
 
 class Robin_hood():
 
